@@ -1,0 +1,47 @@
+#inputForm{
+    position: absolute;
+    bottom: 50px;
+    border: 2px solid green;
+    background-color: rgba(53, 20, 126, 0.41);
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    left: 25%;
+}
+#workForm{
+    position: absolute;
+    width: 1300px;
+    left: 25%;
+}
+
+#seqInput{
+    max-width: 1000px;
+    min-width: 600px;
+}
+
+.canUseRule{
+    border: greenyellow 5px solid;
+}
+
+.cantUseRule{
+    border: orangered 5px solid;
+}
+
+.b-popup{
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow:hidden;
+    position:fixed;
+    top:0px;
+}
+.b-popup .b-popup-content{
+    margin:40px auto 0px auto;
+    width:200px;
+    height: 140px;
+    padding:10px;
+    background-color: #c5c5c5;
+    border-radius:5px;
+    box-shadow: 0px 0px 10px #000;
+}

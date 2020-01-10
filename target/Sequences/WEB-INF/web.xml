@@ -1,0 +1,42 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <welcome-file-list>
+    <welcome-file>sequention.jsp</welcome-file>
+  </welcome-file-list>
+
+  <servlet>
+    <servlet-name>InputSequences</servlet-name>
+    <servlet-class>servlets.InputSequences</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InputSequences</servlet-name>
+    <url-pattern>/inputSequences</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>sequention</servlet-name>
+    <jsp-file>/sequention.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>sequention</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!--servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/images/</url-pattern>
+  </servlet-mapping-->
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+
+
+
+</web-app>
