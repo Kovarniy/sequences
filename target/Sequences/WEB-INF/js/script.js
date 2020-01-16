@@ -110,7 +110,6 @@ function inputExpression() {
     console.log("to Send expressions");
     addExpr = $('#addExpression').val();
     ajaxUseRule(glRuleId, addExpr);
-    PopUpHide();
 }
 
 function ajaxUseRule(_ruleId,_addExpr) {
@@ -126,8 +125,19 @@ function ajaxUseRule(_ruleId,_addExpr) {
             y : 0
         },
         success : function(response) {
+            /*Тут будет обработка ошибочных и верных запросов*/
             sequntion = JSON.parse(response);
             console.log(sequntion);
+            error = sequntion.errorCode;
+            if (error == 1){
+                answer = sequntion.answer;
+                $('#addExprResponse').text(answer);
+            } else{
+                PopUpHide();
+                /*Если ошибки нет, то нужно прерисовывать поле выводимых секвенций*/
+                // реализация идет в addInputField(answer);
+            }
+
         },
         error: function(){
             console.log('error!');

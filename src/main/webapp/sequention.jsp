@@ -62,7 +62,7 @@
     <strong>Ответ сервлета </strong>:<span id="ajaxUserServletResponse"></span>
     <br>
     <label for="inputSeq">Введите секвенцию: </label>
-    <input type="text" id="inputSeq" required>
+    <input type="text" id="inputSeq" pattern="[+a-zA-Z=>&\-\(\)]+" required>
     <button type="submit">Окей</button>
 </form>
 
@@ -70,8 +70,9 @@
     <form class="b-popup-content" >
         <p>Введите выражение</p>
         <!-- Продумать регулярное выражение для input-->
-        <input type="text" id="addExpression" placeholder="Введите выражение: " pattern="[+a-zA-Z=>&\-\(\)]" required>
-        <button onclick="PopUpHide();">Закрыть</button>
+        <strong>Ответ сервлета </strong>:<span id="addExprResponse"></span>
+        <input type="text" id="addExpression" placeholder="Введите выражение: " pattern="[+a-zA-Z=>&\-\(\)]+" required>
+        <input type="reset" value="Закрыть" onclick="PopUpHide();">
         <input type="submit">
     </form>
 </div>

@@ -35,8 +35,7 @@ public class Sequence {
 
     }
 
-    public void deleteBrunches()
-    {
+    public void deleteBrunches() {
         for (int i = 0; i < 3; i++)
             bindSeq[i] = null;
         ruleIndex = -1;
@@ -264,6 +263,8 @@ public class Sequence {
         Expression left = currentSeq.getLeftOperand();
         Expression right = currentSeq.getRightOperand();
         List<Expression> outputOper = left.enumToArray();
+        //Проверка на то, что пользователь ввел допустимые выражения в антициденте
+        //тоесть там не появились новые значения
         for (Expression io: inputOper)
             if (!outputOper.contains(io))
                 return false;

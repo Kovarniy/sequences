@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import logic.Sequence.Sequence;
-import logic.Sequence.Expression.*;
-import org.json.JSONObject;
 
 public class GetQuery {
 
@@ -137,12 +135,15 @@ public class GetQuery {
             addExpr = null;
 
         JSONObject jsonAnswer = new JSONObject();
-        if (!checkExpressions(addExpr)){
+        /*if (!checkExpressions(addExpr)){
             System.out.println("ошибка");
             jsonAnswer.put("answer", "Ошибка преобразования выражения");
             jsonAnswer.put("errorCode", 1);
-        }
+        }*/
 
+        /*TODO Нужно ли для каждого правила делать проверку на то,
+        *  удалось ли его применить?  Т.К. некоторые правида априори применимы*/
+        boolean canUseRul = true;
         switch (Integer.parseInt(ruleId)){
             case 0:
                 branch.useRule0();
@@ -160,7 +161,11 @@ public class GetQuery {
                 branch.useRule4();
                 break;
             case 5:
-                branch.useRule5(addExpr);
+                canUseRul = branch.useRule5(addExpr);
+                if (!canUseRul) {
+                    jsonAnswer.put("answer", "Данное выражение не является дизъюнкцией!");
+                    jsonAnswer.put("errorCode", 1);
+                }
                 break;
             case 6:
                 branch.useRule6();
@@ -175,14 +180,21 @@ public class GetQuery {
                 branch.useRule9(addExpr);
                 break;
             case 10:
-                branch.useRule10(addExpr);
+                canUseRul = branch.useRule10(addExpr);
+                if (!canUseRul) {
+                    jsonAnswer.put("answer", "Неверное выражение!");
+                    jsonAnswer.put("errorCode", 1);
+                }
                 break;
             case 11:
                 branch.useRule11();
                 break;
         }
 
-        jsonAnswer.put("answer", seq.toJson());
+        if (canUseRul) {
+            jsonAnswer.put("answer", seq.toJson());
+            jsonAnswer.put("errorCode", 0);
+        }
        // System.out.println("json  = " + jsonAnswer.toString());
 
         OutputStream outStream = resp.getOutputStream();
