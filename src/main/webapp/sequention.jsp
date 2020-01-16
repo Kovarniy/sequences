@@ -40,40 +40,40 @@
 --%>
 </p>
 
-<button class="rulesBtn canUseRule" onclick="useRule(0); return false;"><img src="images/1.jpg" alt="1"  style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(1); return false;"><img src="images/2.jpg" alt="2" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(2); return false;"><img src="images/3.jpg" alt="3" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(3); return false;"><img src="images/4.jpg" alt="4" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(4); return false;"><img src="images/5.jpg" alt="5" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(5); return false;"><img src="images/6.jpg" alt="6" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(6); return false;"><img src="images/7.jpg" alt="7" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(7); return false;"><img src="images/8.jpg" alt="8" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(8); return false;"><img src="images/9.jpg" alt="9" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(9); return false;"><img src="images/10.jpg" alt="10" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(10); return false;"><img src="images/11.jpg" alt="11" style="vertical-align: middle"> </button>
-<button class="rulesBtn canUseRule" onclick="useRule(11); return false;"><img src="images/12.jpg" alt="12" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(0); return false;" disabled><img src="images/1.jpg" alt="1"  style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(1); return false;" disabled><img src="images/2.jpg" alt="2" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(2); return false;" disabled><img src="images/3.jpg" alt="3" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(3); return false;" disabled><img src="images/4.jpg" alt="4" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(4); return false;" disabled><img src="images/5.jpg" alt="5" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(5); return false;" disabled><img src="images/6.jpg" alt="6" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(6); return false;" disabled><img src="images/7.jpg" alt="7" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(7); return false;" disabled><img src="images/8.jpg" alt="8" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(8); return false;" disabled><img src="images/9.jpg" alt="9" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(9); return false;" disabled><img src="images/10.jpg" alt="10" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(10); return false;" disabled><img src="images/11.jpg" alt="11" style="vertical-align: middle"> </button>
+<button class="rulesBtn cantUseRule" onclick="useRule(11); return false;" disabled><img src="images/12.jpg" alt="12" style="vertical-align: middle"> </button>
 
 <!--input type="text" readonly> <input type="text" readonly> <input type="text" readonly-->
 <form id="seqForm">
 
 </form>
 
-<form id="inputForm" metod="POST" onsubmit="return newSequnces();">
+<form id="inputForm" metod="GET">
     <strong>Ответ сервлета </strong>:<span id="ajaxUserServletResponse"></span>
     <br>
     <label for="inputSeq">Введите секвенцию: </label>
-    <input type="text" id="inputSeq">
-    <button type="submit" onclick="newSequnces(); return false;">Окей</button>
+    <input type="text" id="inputSeq" required>
+    <button type="submit">Окей</button>
 </form>
 
-<div class="b-popup" id="popup1">
-    <div class="b-popup-content">
+<div class="b-popup" metod="GET" id="popup1">
+    <form class="b-popup-content" >
         <p>Введите выражение</p>
         <!-- Продумать регулярное выражение для input-->
-        <input type="text" id="addExpression" pattern="[A-Za-z]">
+        <input type="text" id="addExpression" placeholder="Введите выражение: " pattern="[+a-zA-Z=>&\-\(\)]" required>
         <button onclick="PopUpHide();">Закрыть</button>
-        <button onclick="PopUpHide();">Ок</button>
-    </div>
+        <input type="submit">
+    </form>
 </div>
 
 </body>

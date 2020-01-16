@@ -44,11 +44,6 @@ public class InputSequences extends HttpServlet {
         String queryType = req.getParameter("queryType").trim();
         System.out.println(queryType);
 
-        /*
-        * TODO Нужно подумать, где должна храниться секвенция
-        * */
-        //System.out.println("currentSeq + " + currentSeq.toString());
-
         switch (queryType){
             case "newSequnces":
                 /*TODO проверка на null*/

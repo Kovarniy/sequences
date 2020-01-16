@@ -44,17 +44,14 @@ public class GetQuery {
         String inputSeq = req.getParameter("inputSeq").trim();
         resp.setContentType("text/plain");
         //resp.setContentType("application/json");
+        System.out.println("inputSeq= " + inputSeq);
         Expression expr = Expression.stringToExpression(translateChars(inputSeq));
+        System.out.println("expr= " + expr.toString());
         JSONObject jsonAnswer = new JSONObject();
 
         Sequence seq = null;
-        if (!checkExpressions(expr)){
-            jsonAnswer.put("answer", "Ошибка преобразования выражения");
-            jsonAnswer.put("errorCode", 1);
-            return null;
-        }
-
         if (!expr.isSequence()){
+            System.out.println("Это не секвенция!");
             jsonAnswer.put("answer", "Это не секвенция!");
             jsonAnswer.put("errorCode", 1);
         }
@@ -76,17 +73,7 @@ public class GetQuery {
             }
         }
 
-        /*    TESTER */
-        /*
-        Sequence mainSeq = new Sequence((BinaryOperator)Expression.stringToExpression(translateChars("-x&x=")));
-        mainSeq.useRule9(Expression.stringToExpression(translateChars("x")));
-        Sequence br1 = mainSeq.getBind(0);
-        Sequence br2 = mainSeq.getBind(1);
-        br1.useRule2(Expression.stringToExpression(translateChars("-x")));
-        br2.useRule1(Expression.stringToExpression(translateChars("x")));
-        */
         OutputStream outStream = resp.getOutputStream();
-        // outStream.write(jsonAnswer.toString().replace("\\\"", "\"").getBytes("UTF-8"));
         outStream.write(jsonAnswer.toString().getBytes("UTF-8"));
 
         outStream.flush();
@@ -133,17 +120,31 @@ public class GetQuery {
         System.out.println("seq get = " + branch);
 
         String ruleId = req.getParameter("ruleId").trim();
+        System.out.println("id = " + ruleId);
+
         String addExprStr = req.getParameter("addExpr").trim();
         Expression addExpr;
+
+        /*
+        * Проверка добавленна на всякий случай. Поскольку теоретически на сервер
+        * не может придти пустое выражение, т.к. на уровне html стоит запер на пустые
+        * выражения
+        * */
 
         if (addExprStr != "null")
             addExpr = Expression.stringToExpression(translateChars(addExprStr));
         else
             addExpr = null;
 
+        JSONObject jsonAnswer = new JSONObject();
+        if (!checkExpressions(addExpr)){
+            System.out.println("ошибка");
+            jsonAnswer.put("answer", "Ошибка преобразования выражения");
+            jsonAnswer.put("errorCode", 1);
+        }
+
         switch (Integer.parseInt(ruleId)){
             case 0:
-                System.out.println("0");
                 branch.useRule0();
                 break;
             case 1:
@@ -181,12 +182,8 @@ public class GetQuery {
                 break;
         }
 
-        JSONObject jsonAnswer = new JSONObject();
-        //JSONObject jsonAnswer = seq.toJson();
-
         jsonAnswer.put("answer", seq.toJson());
-        System.out.println("json  = " + jsonAnswer.toString());
-
+       // System.out.println("json  = " + jsonAnswer.toString());
 
         OutputStream outStream = resp.getOutputStream();
         outStream.write(jsonAnswer.toString().getBytes("UTF-8"));

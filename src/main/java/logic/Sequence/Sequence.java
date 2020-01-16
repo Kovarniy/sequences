@@ -297,27 +297,6 @@ public class Sequence {
         return currentSeq.getLeftOperand().equals(currentSeq.getRightOperand());
     }
 
- /*   private void toJson(StringBuilder sb) {
-        sb.append("{ \"expression\": ");
-        sb.append(this);
-        sb.append(", ");
-        for (int i = 0; i < 3; i++) {
-            sb.append(String.format("\"bind%d\": ", i+1));
-            if (bindSeq[i] == null)
-                sb.append(" null");
-            else
-                bindSeq[i].toJson(sb);
-            if (i != 2) sb.append(" ,");
-        }
-        sb.append(" }");
-    }
-
-    public String toJson() {
-        StringBuilder sb = new StringBuilder();
-        toJson(sb);
-        return sb.toString();
-    }*/
-
     protected void toJson(JSONObject childData) {
         for (int i = 0; i < 3; i++) {
             if (bindSeq[i] == null) {

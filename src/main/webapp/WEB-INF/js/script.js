@@ -3,11 +3,22 @@ $(document).ready(function() {
     $(document).ready(function(){
         PopUpHide();
     });
+    /*TODO Разобраться с тем, что такое e*/
+    $("#popup1").submit(function(e) {  //указать вашу форму
+        e.preventDefault(); // отменит перезагрузку
+        inputExpression();
+    });
+    $("#inputForm").submit(function(e) {
+        e.preventDefault();
+        newSequnces();
+    });
 });
 
 var sequntion;
 var addExpr;
+var glRuleId;
 
+/* QUERIES */
 function newSequnces() {
     $.ajax({
         url : 'inputSequences',     // URL - сервлет
@@ -19,7 +30,7 @@ function newSequnces() {
             sequntion = JSON.parse(response);
             console.log(sequntion);
             error = sequntion.errorCode;
-            console.log("error = " + error);
+          //  console.log("error = " + error);
 
             if (error == 1){
                 answer = sequntion.answer;
@@ -45,10 +56,9 @@ function canUseRule(content) {
         success : function(response) {
             var res = JSON.parse(response);
             rules = res.rule;
-            console.log(rules);
-
+            //console.log(rules);
             $('.rulesBtn').each(function(index,elem) {
-                console.log(rules);
+                //console.log(rules);
                 if (rules[index] == false) {
                     $(elem).prop("disabled", true);
                     $(elem).addClass("cantUseRule");
@@ -59,7 +69,6 @@ function canUseRule(content) {
                     $(elem).addClass("canUseRule");
                     $(elem).removeClass("cantUseRule");
                 }
-
             });
         },
         error: function(){
@@ -70,34 +79,49 @@ function canUseRule(content) {
 
 function useRule(ruleId) {
     /*  TODO необходимо получать (x,y) активного input  */
-    var type = typeof ruleId;
+    glRuleId = ruleId;
+    var type = typeof glRuleId;
     if ( type != "number" ){
         console.log("Incorrect rule type or rule number");
         return;
     }
 
     /*  TODO Сделать проверку на корректность добавочного выражения  */
-    /*PopUp окно*/
-    switch (ruleId) {
+    switch (glRuleId) {
         case 1:
         case 2:
         case 5:
         case 7:
         case 9:
         case 10:
+            console.log("Need to add expressions");
             $("#popup1").show();
             break;
+        default:
+            ajaxUseRule(glRuleId,null);
     }
+}
 
+/**/
 
+/* useRule uses these functions */
+
+function inputExpression() {
+    console.log("to Send expressions");
+    addExpr = $('#addExpression').val();
+    ajaxUseRule(glRuleId, addExpr);
+    PopUpHide();
+}
+
+function ajaxUseRule(_ruleId,_addExpr) {
+    console.log("We uses ruleId = " + _ruleId);
     $.ajax({
         url: 'inputSequences',
         data : {
-            inputSeq: sequntion,
-            ruleId: ruleId,
+            ruleId: _ruleId,
             queryType : "useRule",
             /*Текущие x,y и addExpr являются заглушками */
-            _addExpr : null,
+            addExpr : _addExpr,
             x : 0,
             y : 0
         },
@@ -111,6 +135,7 @@ function useRule(ruleId) {
     });
 }
 
+/**/
 
 function addInputField(answer) {
     /*
@@ -119,12 +144,7 @@ function addInputField(answer) {
     * */
     $('body').append('<input type="text" value="' + answer + '"  readonly onfocus="canUseRule(this); return false;" class="currentSeq"> ');
 }
-/* TODO продумать алгорим работы с окном ввода дополнительных выражений */
-function inputExpression() {
-    addExpr = $('#addExpression').val();
-}
 
 function PopUpHide(){
     $("#popup1").hide();
 }
-
