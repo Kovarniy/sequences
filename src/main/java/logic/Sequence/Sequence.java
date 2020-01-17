@@ -321,7 +321,19 @@ public class Sequence {
     public JSONObject toJson() {
         JSONObject childData = new JSONObject();
         childData.put("expr", currentSeq);
-        //y = x = 0;
+
+        //TODO возможно стоит создать Енумиратор для статусов
+        // перенести проверку на аксиому в класс expressions?
+        if (currentSeq instanceof BinaryOperator) {
+            BinaryOperator s = (BinaryOperator) currentSeq;
+            if (s.isSequence() && s.getLeftOperand().equals(s.getRightOperand())) {
+                childData.put("status", "isAxiom");
+            } else if (!currentSeq.isAlwaysTrue()) {
+                childData.put("status", "isNotProvabele");
+            }
+        }    else  childData.put("status", "ok");
+
+
         //System.out.println(childData.toString());
         toJson(childData);
         return childData;

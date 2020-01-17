@@ -67,9 +67,11 @@ public class GetQuery {
                 seq = new Sequence((BinaryOperator) expr);
                 jsonAnswer.put("answer", seq.toJson());
                 jsonAnswer.put("errorCode", 0);
+                jsonAnswer.put("status", "ok");
                // System.out.println(jsonAnswer.toString());
             }
         }
+
 
         OutputStream outStream = resp.getOutputStream();
         outStream.write(jsonAnswer.toString().getBytes("UTF-8"));

@@ -131,7 +131,7 @@ function ajaxUseRule(_ruleId,_addExpr) {
         },
         success : function(response) {
             /*Тут будет обработка ошибочных и верных запросов*/
-            sequntion = JSON.parse(response);
+            //sequntion = JSON.parse(response);
             console.log(sequntion);
             var error = sequntion.errorCode;
             var answer = sequntion.answer;
@@ -162,45 +162,39 @@ function clearSeqField() {
 }
 
 function addInputField(response, _x, _y) {
-    /*
-     * TODO Необходимо расчитать индексы (x,y) и положение для каждого
-     *  нового inputa
-     * */
+    console.log("response   =   ");
     console.log(response);
-
     var answer = response;
     var expr = answer.expr;
+    console.log('expr = ');
+    console.log(expr);
     var y = _y;
     var x = _x;
+    var seqStatus = answer.status;
+    console.log('status = ');
+    console.log(seqStatus);
 
     $('#seqForm').append('<input type="text" value="' + expr + '"  onfocus="canUseRule(this); return false;" ' +
-        'x="' + _x + '" y="' + y + '" class="currentSeq" readonly>');
+        'x="' + _x + '" y="' + y + '" class="currentSeq ' + seqStatus + ' " readonly>');
     y++;
 
-    /* Определям в какоую ветку мы идем */
+        /* Определям в какоую ветку мы идем */
     if(answer.bind0 == "null"){
+        console.log("its null");
         return;
     } else {
+        console.log("b0");
         addInputField(answer.bind0, x * 3 + 0, y);
     }
     if (answer.bind1 != "null"){
+        console.log("b1");
         addInputField(answer.bind1, x * 3 + 1, y);
     }
     if (answer.bind2 != "null"){
+        console.log("b2");
         addInputField(answer.bind2, x * 3 + 2, y);
     }
 
-}
-
-function countLastBrunches(brunch) {
-    var countNextBrunch = 0;
-    if (brunch.bind2 != "null")
-        countNextBrunch = 2;
-    else if (brunch.bind1 != "null")
-        countNextBrunch = 1;
-    //else if (brunch.bind0 != "null")
-    //    countNextBrunch = 1;
-    return countNextBrunch;
 }
 
 

@@ -16,23 +16,6 @@ public class InputSequences extends HttpServlet {
 
     Sequence currentSeq;
 
-    public static String translateChars(String str) {
-        StringBuilder sb = new StringBuilder();
-        for (char ch : str.toCharArray()) {
-            switch (ch) {
-                case '-': sb.append(OperatorType.NOT); break; // OperatorType приводится к строке(переопределен метод toString)
-                case '&': sb.append(OperatorType.AND); break;
-                case 'v': sb.append(OperatorType.OR); break;
-                case '>': sb.append(OperatorType.IMP); break;
-                case ',': sb.append(OperatorType.ENUM); break;
-                case '=': sb.append(OperatorType.SEQ); break;
-                default: sb.append(ch);
-            }
-        }
-        return sb.toString();
-    }
-
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //req.getRequestDispatcher("/sss.jsp").forward(req, resp);
