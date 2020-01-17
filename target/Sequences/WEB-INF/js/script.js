@@ -17,6 +17,9 @@ $(document).ready(function() {
 var sequntion;
 var addExpr;
 var glRuleId;
+// Голбальные x,y - содержат индекс ipnuta, который находится в фокусе
+var glX;
+var glY;
 
 /* QUERIES */
 function newSequnces() {
@@ -26,18 +29,16 @@ function newSequnces() {
             inputSeq : $('#inputSeq').val(),
             queryType : "newSequnces"
         },
-        success : function(response) {
-            sequntion = JSON.parse(response);
-            console.log(sequntion);
-            error = sequntion.errorCode;
-          //  console.log("error = " + error);
+        success : function(response) {  //response - строка
+            sequntion = JSON.parse(response);   //парсим строку в json "объект"
+            var error = sequntion.errorCode;
+            var answer = sequntion.answer;
 
             if (error == 1){
-                answer = sequntion.answer;
                 $('#ajaxUserServletResponse').text(answer);
             } else{
-                expr = sequntion.answer.expr;
-                addInputField(expr);
+                clearSeqField();
+                addInputField(answer, 0, 0);
             }
         },
         error: function(){
@@ -47,6 +48,11 @@ function newSequnces() {
 }
 
 function canUseRule(content) {
+    glX  = content.getAttribute('x');
+    console.log(glX);
+    glY = content.getAttribute('y');
+    console.log(glY);
+
     $.ajax({
         url : 'inputSequences',
         data : {
@@ -55,7 +61,7 @@ function canUseRule(content) {
         },
         success : function(response) {
             var res = JSON.parse(response);
-            rules = res.rule;
+            var rules = res.rule;
             //console.log(rules);
             $('.rulesBtn').each(function(index,elem) {
                 //console.log(rules);
@@ -78,7 +84,7 @@ function canUseRule(content) {
 }
 
 function useRule(ruleId) {
-    /*  TODO необходимо получать (x,y) активного input  */
+
     glRuleId = ruleId;
     var type = typeof glRuleId;
     if ( type != "number" ){
@@ -86,7 +92,6 @@ function useRule(ruleId) {
         return;
     }
 
-    /*  TODO Сделать проверку на корректность добавочного выражения  */
     switch (glRuleId) {
         case 1:
         case 2:
@@ -121,23 +126,22 @@ function ajaxUseRule(_ruleId,_addExpr) {
             queryType : "useRule",
             /*Текущие x,y и addExpr являются заглушками */
             addExpr : _addExpr,
-            x : 0,
-            y : 0
+            x : glX,
+            y : glY
         },
         success : function(response) {
             /*Тут будет обработка ошибочных и верных запросов*/
             sequntion = JSON.parse(response);
             console.log(sequntion);
-            error = sequntion.errorCode;
+            var error = sequntion.errorCode;
+            var answer = sequntion.answer;
             if (error == 1){
-                answer = sequntion.answer;
                 $('#addExprResponse').text(answer);
             } else{
                 PopUpHide();
-                /*Если ошибки нет, то нужно прерисовывать поле выводимых секвенций*/
-                // реализация идет в addInputField(answer);
+                clearSeqField();
+                addInputField(answer, 0,0);
             }
-
         },
         error: function(){
             console.log('error!');
@@ -147,13 +151,60 @@ function ajaxUseRule(_ruleId,_addExpr) {
 
 /**/
 
-function addInputField(answer) {
-    /*
-    * TODO Необзодимо расчитать индексы (x,y) и положение для каждого
-    *  нового inputa
-    * */
-    $('body').append('<input type="text" value="' + answer + '"  readonly onfocus="canUseRule(this); return false;" class="currentSeq"> ');
+/* Functions for display sequentions tree */
+
+function clearSeqField() {
+    var container = document.getElementById('seqForm');
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 }
+
+function addInputField(response, _x, _y) {
+    /*
+     * TODO Необходимо расчитать индексы (x,y) и положение для каждого
+     *  нового inputa
+     * */
+    console.log(response);
+
+    var answer = response;
+    var expr = answer.expr;
+    var y = _y;
+    var x = _x;
+
+    $('#seqForm').append('<input type="text" value="' + expr + '"  onfocus="canUseRule(this); return false;" ' +
+        'x="' + _x + '" y="' + y + '" class="currentSeq" readonly>');
+    y++;
+
+    /* Определям в какоую ветку мы идем */
+    if(answer.bind0 == "null"){
+        return;
+    } else {
+        addInputField(answer.bind0, x * 3 + 0, y);
+    }
+    if (answer.bind1 != "null"){
+        addInputField(answer.bind1, x * 3 + 1, y);
+    }
+    if (answer.bind2 != "null"){
+        addInputField(answer.bind2, x * 3 + 2, y);
+    }
+
+}
+
+function countLastBrunches(brunch) {
+    var countNextBrunch = 0;
+    if (brunch.bind2 != "null")
+        countNextBrunch = 2;
+    else if (brunch.bind1 != "null")
+        countNextBrunch = 1;
+    //else if (brunch.bind0 != "null")
+    //    countNextBrunch = 1;
+    return countNextBrunch;
+}
+
+
+/**/
 
 function PopUpHide(){
     $("#popup1").hide();

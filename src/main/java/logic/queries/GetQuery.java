@@ -114,11 +114,11 @@ public class GetQuery {
         //Получаем нужную секвенцию
         String x = req.getParameter("x").trim();
         String y = req.getParameter("y").trim();
-        Sequence branch = seq.get(0, 0);
+        Sequence branch = seq.get(Integer.parseInt(x), Integer.parseInt(y));
         System.out.println("seq get = " + branch);
 
         String ruleId = req.getParameter("ruleId").trim();
-        System.out.println("id = " + ruleId);
+        //System.out.println("id = " + ruleId);
 
         String addExprStr = req.getParameter("addExpr").trim();
         Expression addExpr;

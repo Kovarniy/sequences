@@ -105,6 +105,9 @@ public class Sequence {
         return false;
     }
 
+    /*TODO Однако перед записью новых веток, необхадиво занулить все ветки, ну мало ли
+    *  вдруг там что-то было записано. Например мы хотим испольховать правило, которое создает одну ветку.
+    *  Но у текущей секвенции уже есть две ветки. Поэтому надо избавиться от них, а потом уже записывать */
     public boolean useRule0(){
         if (!canUseRule(0)) return false;
         Expression left = currentSeq.getLeftOperand();
@@ -299,14 +302,17 @@ public class Sequence {
     }
 
     protected void toJson(JSONObject childData) {
+
         for (int i = 0; i < 3; i++) {
             if (bindSeq[i] == null) {
                 childData.put("bind"+i, "null");
                 if (i == 2) return;
             }
             else{
+
                 JSONObject childData2 = bindSeq[i].toJson();
                 childData.put("bind"+i, childData2);
+
             }
             //System.out.println(childData.toString());
         }
@@ -315,6 +321,7 @@ public class Sequence {
     public JSONObject toJson() {
         JSONObject childData = new JSONObject();
         childData.put("expr", currentSeq);
+        //y = x = 0;
         //System.out.println(childData.toString());
         toJson(childData);
         return childData;
@@ -340,8 +347,8 @@ public class Sequence {
                     if (x.getValue() == 0)
                         return bindSeq[i];
                     x.decrement();
-                }
-
+                } else
+                x.decrement();  //Для полнго расчета индексов
             }
         }
         else

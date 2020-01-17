@@ -25,7 +25,7 @@ public class Tester {
     // 1|-0
 
     public static void main(String[] args) {
-        /*Sequence mainSeq = new Sequence((BinaryOperator)Expression.stringToExpression(translateChars("-x&x=")));
+        Sequence mainSeq = new Sequence((BinaryOperator)Expression.stringToExpression(translateChars("-x&x=")));
         mainSeq.useRule9(Expression.stringToExpression(translateChars("x")));
 
         System.out.println("bind 0 " + mainSeq.getBind(0));
@@ -40,8 +40,8 @@ public class Tester {
         System.out.println("hui" + mainSeq.get(1, 1));
         System.out.println(mainSeq.get(2, 2));
         System.out.println(mainSeq.get(0, 3));
-        */
 
+/*
         Sequence mainSeq = new Sequence((BinaryOperator)Expression.stringToExpression(translateChars("y,y>z=x>z")));
         boolean canUseRul5_10 = mainSeq.useRule5(Expression.stringToExpression(translateChars("yvz")));
         System.out.println("canUseRul5_10 = " + canUseRul5_10);
@@ -49,7 +49,7 @@ public class Tester {
         System.out.println("br1 = " + br1);
 
         System.out.println(mainSeq.toJson().toString());
-
+*/
         Scanner in = new Scanner(System.in);
 
         while (true) {
